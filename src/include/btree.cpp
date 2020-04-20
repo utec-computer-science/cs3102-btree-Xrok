@@ -3,7 +3,7 @@
 template <typename T, int ORDER>
 class BTree
 {
-    typedef BNode<T,ORDER> BNode;
+    typedef BNode<T,ORDER> bnode;
     
     enum state
     {
@@ -12,12 +12,12 @@ class BTree
         NORMAL
     };
 
-    BNode *root;
+    bnode *root;
 
 public:
     
 
-    BTree() { root = new BNode; }
+    BTree() { root = new bnode; }
 
     void insert(const T &value)
     {
@@ -28,7 +28,7 @@ public:
         }
     }
 
-    int insert(BNode *ptr, const T &value)
+    int insert(bnode *ptr, const T &value)
     {
         int pos = 0;
         while (pos < ptr->count && ptr->data[pos] < value)
@@ -50,11 +50,11 @@ public:
         return ptr->is_overflow() == true ? OVERFLOW : NORMAL;
     }
 
-    void split(BNode *ptr, int pos)
+    void split(bnode *ptr, int pos)
     {
-        BNode *overflow_node = ptr->children[pos]; //OJO
-        BNode *left_child = overflow_node;
-        BNode *rigth_child = new BNode();
+        bnode *overflow_node = ptr->children[pos]; //OJO
+        bnode *left_child = overflow_node;
+        bnode *rigth_child = new bnode();
 
         left_child->count = 0;
         int iter = 0, i;
@@ -82,11 +82,11 @@ public:
         ptr->children[pos + 1] = rigth_child;
     }
 
-    void split_root(BNode *ptr, const T &value)
+    void split_root(bnode *ptr, const T &value)
     {
-        BNode *overflow_node = ptr;
-        BNode *left_child = new BNode();
-        BNode *rigth_child = new BNode();
+        bnode *overflow_node = ptr;
+        bnode *left_child = new bnode();
+        bnode *rigth_child = new bnode();
 
         int iter = 0, i;
         for (i = 0; iter < ceil(ORDER / 2.0); i++)
@@ -120,7 +120,7 @@ public:
         std::cout << "________________________\n";
     }
 
-    void print(BNode *ptr, int level)
+    void print(bnode *ptr, int level)
     {
         if (ptr)
         {
